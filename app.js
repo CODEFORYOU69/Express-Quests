@@ -16,20 +16,20 @@ const movieHandlers = require("./movieHandlers");
 
  // in app.js
   
- const { validateMovie } = require("./validators.js");
+ const { validateMovie, validateUser } = require("./validators.js");
   
- app.post("/api/movies", validateMovie, movieHandlers.postMovie);
+
 
 app.get("/api/movies", movieHandlers.getMovies);
 app.get("/api/movies/:id", movieHandlers.getMovieById);
 app.get("/api/users", movieHandlers.getUsers);
 app.get("/api/users/:id", movieHandlers.getUsersById);
-app.post("/api/movies", movieHandlers.postMovie);
-app.post("/api/users", movieHandlers.postUser);
+app.post("/api/movies", validateMovie, movieHandlers.postMovie);
+app.post("/api/users",validateUser, movieHandlers.postUser);
 app.put("/api/users/:id", movieHandlers.updateUser);
 app.put("/api/movies/:id", movieHandlers.updateMovie);
 app.delete("/api/movies/:id", movieHandlers.deleteMovie);
-app.delete("/api/users/:id", movieHandlers.deleteUser);
+app.delete("/api/users/:id",validateUser, movieHandlers.deleteUser);
 
 
 app.listen(port, (err) => {
