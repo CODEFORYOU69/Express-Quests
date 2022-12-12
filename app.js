@@ -26,10 +26,10 @@ app.get("/api/users", movieHandlers.getUsers);
 app.get("/api/users/:id", movieHandlers.getUsersById);
 app.post("/api/movies", validateMovie, movieHandlers.postMovie);
 app.post("/api/users",validateUser, movieHandlers.postUser);
-app.put("/api/users/:id", movieHandlers.updateUser);
+app.put("/api/users/:id",validateUser, movieHandlers.updateUser);
 app.put("/api/movies/:id", movieHandlers.updateMovie);
 app.delete("/api/movies/:id", movieHandlers.deleteMovie);
-app.delete("/api/users/:id",validateUser, movieHandlers.deleteUser);
+app.delete("/api/users/:id", movieHandlers.deleteUser);
 
 
 app.listen(port, (err) => {
