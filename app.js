@@ -14,6 +14,12 @@ app.get("/", welcome);
 
 const movieHandlers = require("./movieHandlers");
 
+ // in app.js
+  
+ const { validateMovie } = require("./validators.js");
+  
+ app.post("/api/movies", validateMovie, movieHandlers.postMovie);
+
 app.get("/api/movies", movieHandlers.getMovies);
 app.get("/api/movies/:id", movieHandlers.getMovieById);
 app.get("/api/users", movieHandlers.getUsers);
@@ -24,6 +30,7 @@ app.put("/api/users/:id", movieHandlers.updateUser);
 app.put("/api/movies/:id", movieHandlers.updateMovie);
 app.delete("/api/movies/:id", movieHandlers.deleteMovie);
 app.delete("/api/users/:id", movieHandlers.deleteUser);
+
 
 app.listen(port, (err) => {
   if (err) {
