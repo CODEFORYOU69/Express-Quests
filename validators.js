@@ -1,56 +1,37 @@
 // in validators.js
+const { body, validationResult } = require('express-validator');
 
-const validateMovie = (req, res, next) => {
-    const { title, director, year, color, duration } = req.body;
-    const errors = [];
-  
-    if (title == null) {
-        errors.push({ field: "title", message: "This field is required" });
-      } else if (title.length >= 255) {
-        errors.push({ field: "title", message: "Should contain less than 255 characters" });
+  const validateMovie = [
+    body('title').isString().isLength({ max: 255 }).trim().escape(),
+    body('director').isString().isLength({ max: 255 }).trim().escape(),
+    body('year').isString().isLength({ max: 255 }).trim().escape(),
+    body('color').isString().isLength({ max: 255 }).trim().escape(),
+    body('duration').isInt().toInt(),
+    (req, res, next) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
       }
-    if (director == null) {
-      errors.push({ field: "director", message: "This field is required" });
-    }
-    if (year == null) {
-      errors.push({ field: "year", message: "This field is required" });
-    }
-    if (color == null) {
-      errors.push({ field: "color", message: "This field is required" });
-    }
-    if (duration == null) {
-      errors.push({ field: "duration", message: "This field is required" });
-    }
-   
-    if (errors.length) {
-      res.status(422).json({ validationErrors: errors });
-    } else {
       next();
     }
-  };
-  const validateUser = (req, res, next) => {
-    const { email } = req.body;
-    const errors = [];
+
+  ]
   
-    // ...
-  
-    const emailRegex = /[a-z0-9._]+@[a-z0-9-]+\.[a-z]{2,3}/;
-  
-    if (!emailRegex.test(email)) {
-      errors.push({ field: 'email', message: 'Invalid email' });
+const validateUser = [
+  body('email').isEmail().isLength({ max: 255 }).trim().escape(),
+  body('firstname').isString().isLength({ max: 255 }).trim().escape(),
+  body('lastname').isString().isLength({ max: 255 }).trim().escape(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
     }
-  
-    // ...
-  
-    if (errors.length) {
-      res.status(422).json({ validationErrors: errors });
-    } else {
-      next();
-    }
-  };
-  
-  module.exports = {
+    next();
+  }
+]
+
+
+module.exports = {
     validateMovie,
     validateUser,
   };
- 
